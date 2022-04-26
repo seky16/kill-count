@@ -1,4 +1,4 @@
-# kill-count (Factorio mod)
+# Kill count (Factorio mod)
 https://mods.factorio.com/mod/kill-count
 
 Count how many biters you killed.
