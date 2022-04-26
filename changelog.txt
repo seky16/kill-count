@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2022-04-26
+  Info:
+    - Initial Release
+  Features:
+    - Counts kills (per force) of biters, spawners and worms (entities of type "unit", "unit-spawner" or "turret")
+    - Configurable display of the kill count (each type of entity / total kills only)
+    - Configurable points per enemy entity type
+    - Configurable goal (total kills/points)
+    - Configurable refresh rate (each n ticks)

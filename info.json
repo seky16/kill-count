@@ -1,0 +1,12 @@
+{
+  "name": "kill-count",
+  "version": "0.1.0",
+  "factorio_version": "1.1",
+  "title": "Kill count",
+  "author": "seky16",
+  "contact": "seky16#0005",
+  "homepage": "github.com/seky16",
+  "description": "Count how many biters you killed.",
+  "dependencies": [
+  ]
+}
