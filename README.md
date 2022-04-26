@@ -9,3 +9,5 @@ Features:
 - Configurable points per enemy entity type (comma-separated list of ["internal-name"]=points pairs)
 - Configurable goal (total kills/points)
 - Configurable refresh rate (each n ticks)
+
+Thumbnail courtesy of Linda Spashett (https://commons.wikimedia.org/wiki/File:Hand_tally_and_knitting_row_counter_007.jpg)
