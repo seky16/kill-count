@@ -36,10 +36,10 @@ local function update_gui(player)
     local text = ""
     local total = 0
     local total_points = 0
-    local settings = global.settings[player.index]
-    local verbose = settings.verbose
-    local point_table = settings.point_table
-    local objective = settings.objective
+    local cached_settings = global.settings[player.index]
+    local verbose = cached_settings.verbose
+    local point_table = cached_settings.point_table
+    local objective = cached_settings.objective
     local notify = false
 
     local goal = player.get_goal_description()
@@ -70,9 +70,13 @@ local function update_gui(player)
         end
         if objective > 0 then
             text = { "", text, "/", objective }
-            notify = settings.notify and total >= objective
+            notify = cached_settings.notify and total >= objective
         end
         player.set_goal_description(text, not notify) -- todo: fix dink, only once
+
+        if notify and settings.global["kill-count_win-game"].value then
+            game.set_game_state({ game_finished=true, player_won=true, can_continue=true, victorious_force=player.force })
+        end
 
         if notify then global.settings[player.index].notify = false end
     end
@@ -96,6 +100,10 @@ local function cache_settings(playerIndex)
         point_table = parse_point_table(),
         notify = true,
     }
+
+    if settings.global["kill-count_win-game"].value then
+        game.reset_game_state()
+    end
 end
 
 script.on_init(function()

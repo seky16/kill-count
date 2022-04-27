@@ -29,9 +29,17 @@ data:extend({
         type = "int-setting",
         name = "kill-count_objective",
         localised_name = "Objective",
-        localised_description = "The objective to reach. If set, the player's kill count/score is compared to this value.",
+        localised_description = "The objective to reach. If greater than 0, the player's kill count/score is compared to this value.",
         setting_type = "runtime-global",
         default_value = 0,
         minimum_value = 0
+    },
+    {
+        type = "bool-setting",
+        name = "kill-count_win-game",
+        localised_name = "Win game by reaching the objective",
+        localised_description = "Whether reaching the objective should end the game. Does nothing if objective is equal to 0.",
+        setting_type = "runtime-global",
+        default_value = false
     }
 })
