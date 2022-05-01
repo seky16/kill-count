@@ -1,7 +1,9 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.2.1
-Date: ????
-  Changes:
+Version: 0.3.0
+Date: 2022-05-01
+  Features:
+    - Added a new setting allowing to set the time objective. Kill count stops updating after the time runs out.
+
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.0
 Date: 2022-04-27

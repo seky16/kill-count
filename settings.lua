@@ -14,7 +14,8 @@ data:extend({
         localised_description = "How often (every n ticks) to update the kill count GUI.",
         setting_type = "runtime-per-user",
         default_value = 20,
-        minimum_value = 1
+        minimum_value = 1,
+        maximum_value = 60,
     },
     {
         type = "string-setting",
@@ -28,8 +29,17 @@ data:extend({
     {
         type = "int-setting",
         name = "kill-count_objective",
-        localised_name = "Objective",
-        localised_description = "The objective to reach. If greater than 0, the player's kill count/score is compared to this value.",
+        localised_name = "Kills objective",
+        localised_description = "The kill objective to reach. If greater than 0, the player's kill count/score is compared to this value.",
+        setting_type = "runtime-global",
+        default_value = 0,
+        minimum_value = 0
+    },
+    {
+        type = "int-setting",
+        name = "kill-count_time-objective",
+        localised_name = "Time objective (seconds)",
+        localised_description = "The time objective to reach. If greater than 0, kill count stops updating after time runs out.",
         setting_type = "runtime-global",
         default_value = 0,
         minimum_value = 0

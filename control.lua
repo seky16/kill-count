@@ -29,25 +29,36 @@ local function get_kill_infos(player)
     return kill_counts
 end
 
+---Gets formatted string of time left to the time objective.
+---@param time_left int @ The time left to the time objective (seconds).
+local function format_time_left(time_left)
+    -- https://mods.factorio.com/mod/playtime by thuejk (MIT)
+    local time_left_seconds = math.floor(time_left) % 60
+    local time_left_minutes = math.floor(time_left / 60) % 60
+    local time_left_hours = math.floor(time_left / 3600)
+    if time_left_hours > 0 then
+        return string.format("\nTime left: %d:%02d:%02d", time_left_hours, time_left_minutes, time_left_seconds)
+    else
+        return string.format("\nTime left: %02d:%02d", time_left_minutes, time_left_seconds)
+    end
+end
+
 ---Update player's counter gui.
 ---@param player LuaPlayer @ The player to update the gui for.
 local function update_gui(player)
-    local infos = get_kill_infos(player);
     local text = ""
     local total = 0
     local total_points = 0
     local cached_settings = global.settings[player.index]
     local verbose = cached_settings.verbose
     local point_table = cached_settings.point_table
-    local objective = cached_settings.objective
+    local kill_objective = cached_settings.kill_objective
+    local time_objective = cached_settings.time_objective
+    local time_left = time_objective - math.floor(game.tick / 60)
+    if time_objective > 0 and time_left < 0 then return end
+    local time_left_str = time_objective > 0 and format_time_left(time_left) or ""
     local notify = false
-
-    local goal = player.get_goal_description()
-    if goal == "" then
-        goal = "Total kills: 0"
-        if objective > 0 then goal = goal .. "/" .. objective end
-        player.set_goal_description(goal, true)
-    end
+    local infos = get_kill_infos(player);
 
     for name, info in pairs(infos) do
         if info.count > 0 then
@@ -61,24 +72,23 @@ local function update_gui(player)
         end
     end
 
-    if total > 0 then
-        if text ~= "" then text = { "", text, "\n" } end
-        text = { "", text, "Total kills", ": ", total }
-        if table_size(point_table) > 0 then
-            total = total_points
-            text = { "", text, "\n", "Total points", ": ", total_points }
-        end
-        if objective > 0 then
-            text = { "", text, "/", objective }
-            notify = cached_settings.notify and total >= objective
-        end
-        player.set_goal_description(text, not notify) -- todo: fix dink, only once
+    if text ~= "" then text = { "", text, "\n" } end
+    text = { "", text, "Total kills", ": ", total }
+    if table_size(point_table) > 0 then
+        total = total_points
+        text = { "", text, "\n", "Total points", ": ", total_points }
+    end
+    notify = cached_settings.notify and (time_objective > 0 and time_left == 0)
+    if kill_objective > 0 then
+        text = { "", text, "/", kill_objective }
+        notify = cached_settings.notify and (total >= kill_objective or (time_objective > 0 and time_left == 0))
+    end
+    text = { "", text, time_left_str }
+    player.set_goal_description(text, not notify)
 
-        if notify and settings.global["kill-count_win-game"].value then
-            game.set_game_state({ game_finished=true, player_won=true, can_continue=true, victorious_force=player.force })
-        end
-
-        if notify then global.settings[player.index].notify = false end
+    if notify then global.settings[player.index].notify = false end
+    if notify and settings.global["kill-count_win-game"].value then
+        game.set_game_state({ game_finished=true, player_won=true, can_continue=true, victorious_force=player.force })
     end
 end
 
@@ -96,7 +106,8 @@ local function cache_settings(playerIndex)
     global.settings[playerIndex] = {
         refresh_rate = settings.get_player_settings(playerIndex)["kill-count_refresh-rate"].value,
         verbose = settings.get_player_settings(playerIndex)["kill-count_verbose"].value,
-        objective = settings.global["kill-count_objective"].value,
+        kill_objective = settings.global["kill-count_objective"].value,
+        time_objective = settings.global["kill-count_time-objective"].value,
         point_table = parse_point_table(),
         notify = true,
     }
