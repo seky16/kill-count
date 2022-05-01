@@ -9,5 +9,7 @@ Features:
 - Configurable points per enemy entity type (comma-separated list of ["internal-name"]=points pairs)
 - Configurable goal (total kills/points)
 - Configurable refresh rate (each n ticks)
+- Option allowing to win the game by reaching the objective
+- Option allowing to set the time objective. Kill count stops updating after the time runs out.
 
 Thumbnail courtesy of Linda Spashett (https://commons.wikimedia.org/wiki/File:Hand_tally_and_knitting_row_counter_007.jpg)
