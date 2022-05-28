@@ -120,6 +120,7 @@ end
 script.on_init(function()
     for _, player in pairs(game.players) do
         cache_settings(player.index)
+        update_gui(player)
     end
 end)
 
@@ -139,15 +140,22 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function (event)
     end
 end)
 
-script.on_event(defines.events.on_tick, function(event)
-    for _, player in pairs(game.players) do
-        if not global.settings[player.index] then
-            cache_settings(player.index) -- just in case
-        end
-        if event.tick % global.settings[player.index].refresh_rate == 0 then
+script.on_event(
+    defines.events.on_post_entity_died,
+    function()
+        for _, player in pairs(game.players) do
+            if not global.settings[player.index] then
+                cache_settings(player.index) -- just in case
+            end
+
             update_gui(player)
         end
-    end
-end)
+    end,
+    {
+        { filter = "type", type = "unit" },
+        { filter = "type", type = "unit-spawner" },
+        { filter = "type", type = "turret" }
+    }
+)
 
 -- todo: make proper gui
