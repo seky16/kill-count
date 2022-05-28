@@ -104,7 +104,6 @@ end
 local function cache_settings(playerIndex)
     if not global.settings then global.settings = {} end
     global.settings[playerIndex] = {
-        refresh_rate = settings.get_player_settings(playerIndex)["kill-count_refresh-rate"].value,
         verbose = settings.get_player_settings(playerIndex)["kill-count_verbose"].value,
         kill_objective = settings.global["kill-count_objective"].value,
         time_objective = settings.global["kill-count_time-objective"].value,

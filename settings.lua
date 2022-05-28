@@ -8,16 +8,6 @@ data:extend({
         default_value = false
     },
     {
-        type = "int-setting",
-        name = "kill-count_refresh-rate",
-        localised_name = "Refresh rate",
-        localised_description = "How often (every n ticks) to update the kill count GUI.",
-        setting_type = "runtime-per-user",
-        default_value = 20,
-        minimum_value = 1,
-        maximum_value = 60,
-    },
-    {
         type = "string-setting",
         name = "kill-count_point-table",
         localised_name = "Point table",
